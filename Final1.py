@@ -135,18 +135,18 @@ def main():
     print("Show Hebbian weights and further perform clustering.")
     r=model.main()
 
-    dataset['Cluster_no']=r
+    dataset['Severity of diabetes']=r
 
-    dataset['Cluster_no'].replace(to_replace =0, 
+    dataset['Severity of diabetes'].replace(to_replace =0, 
                  value ="MEDIUM",inplace=True)
-    dataset['Cluster_no'].replace(to_replace =1, 
+    dataset['Severity of diabetes'].replace(to_replace =1, 
                  value ="LOW",inplace=True)
-    dataset['Cluster_no'].replace(to_replace =2, 
+    dataset['Severity of diabetes'].replace(to_replace =2, 
                  value ="HIGH",inplace=True)
     dataset.dropna(axis=0,inplace=True)
     dataset.reset_index(drop=True,inplace=True)
     
-    print(dataset['Weights','winner'].head(30))
+    print(dataset.head(10))
         
 
 if __name__ == '__main__':
