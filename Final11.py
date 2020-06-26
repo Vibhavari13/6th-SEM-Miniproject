@@ -118,7 +118,7 @@ def main():
     # Load data 
     # Create Network Model
    
-    model = Final2.HebbRule()
+    model = Final22.HebbRule()
     E=[]
     for i, x in enumerate(X):
         w = som.winner(x)
