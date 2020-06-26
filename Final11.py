@@ -9,7 +9,7 @@ import skimage.data
 from skimage.color import rgb2gray
 from skimage.filters import threshold_mean
 from skimage.transform import resize
-import Final2
+import Final22
 from neupy import algorithms
 from pandas import read_csv
 from collections import defaultdict
