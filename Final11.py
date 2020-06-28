@@ -19,7 +19,7 @@ from SimpSOM import somNet
 
 # Importing the dataset 
 script_dir = os.path.dirname(__file__)
-training_set_path = os.path.join(script_dir, 'diabetes.csv')
+training_set_path = os.path.join(script_dir, 'diabetes (1).csv')
 dataset = pd.read_csv(training_set_path)
 X = dataset.iloc[:, :-1].values
 y=dataset.iloc[:,-1].values
