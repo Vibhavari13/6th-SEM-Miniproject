@@ -8,6 +8,8 @@ from SimpSOM import somNet
 from numpy import random
 import pandas as pd
 import os
+from sklearn import metrics
+from sklearn.metrics import pairwise_distances
 from mpl_toolkits import mplot3d
 from SimpSOM import somNet 
 from collections import Counter, defaultdict
@@ -65,8 +67,8 @@ class HebbRule(object):
         for col in df.index: 
             row_count += 1
         print(row_count)
-    
-       
+
+        
         kmeans5 = KMeans(n_clusters = 5, init = 'k-means++', random_state = 0)
         x1=kmeans5.fit_predict(df)
         from sklearn import metrics
@@ -74,7 +76,7 @@ class HebbRule(object):
         metrics.silhouette_score(df, labels5, metric = 'euclidean')
         metrics.calinski_harabasz_score(df, labels5)
         print(" The silhouette score for K-means 5 is :", metrics.silhouette_score(df, labels5, metric = 'euclidean'))
-        print(" The Calinsky score for K-means 5 is :",metrics.calinski_harabasz_score(df, labels5))
+        print(" The Calinsky-Harabasz score for K-means 5 is :",metrics.calinski_harabasz_score(df, labels5))
         
         kmeans6 = KMeans(n_clusters = 6, init = 'k-means++', random_state = 0)
         x1=kmeans6.fit_predict(df)
@@ -82,13 +84,20 @@ class HebbRule(object):
         metrics.silhouette_score(df, labels6, metric = 'euclidean')
         metrics.calinski_harabasz_score(df, labels6)
         print(" The silhouette score for K-means 6 is :", metrics.silhouette_score(df, labels6, metric = 'euclidean'))
-        print(" The Calinsky score for K-means 6 is :",metrics.calinski_harabasz_score(df, labels6))
+        print(" The Calinsky-Harabasz score for K-means 6 is :",metrics.calinski_harabasz_score(df, labels6))
 
         kmeans3 = KMeans(n_clusters = 3, init = 'k-means++', random_state = 0)
         x1=kmeans3.fit_predict(df)
         labels = kmeans3.labels_
         print(" The silhouette score for K-means 3 is :", metrics.silhouette_score(df, labels, metric = 'euclidean'))
         print(" The Calinsky score for K-means 3 is :",metrics.calinski_harabasz_score(df, labels))
+        
+        
+        kmeans3 = KMeans(n_clusters = 4, init = 'k-means++', random_state = 0)
+        x1=kmeans3.fit_predict(df)
+        labels = kmeans3.labels_
+        print(" The silhouette score for K-means 4 is :", metrics.silhouette_score(df, labels, metric = 'euclidean'))
+        print(" The Calinsky score for K-means 4 is :",metrics.calinski_harabasz_score(df, labels))
 
         
         
@@ -132,16 +141,16 @@ class HebbRule(object):
         plt.show()
         
         x = df1.copy()
-        kmeans3 = KMeans(n_clusters = 3, init = 'k-means++', random_state = 0)
+        kmeans4 = KMeans(n_clusters = 4, init = 'k-means++', random_state = 0)
         x1=kmeans3.fit_predict(x)
         estimator = KMeans(n_clusters=3)
         estimator.fit(x)
         
         
         clusters = x.copy()
-        clusters['clusterpred']=kmeans3.fit_predict(x)
+        clusters['clusterpred']=kmeans4.fit_predict(x)
         print(clusters)
-        centroids = kmeans3.cluster_centers_
+        centroids = kmeans4.cluster_centers_
         print('The centroid values are as follows:')
         print(centroids)
         plt.scatter(clusters['Weights'],clusters['ClusterNumber'],c=clusters['clusterpred'],cmap='rainbow')
@@ -155,15 +164,15 @@ class HebbRule(object):
         ax = plt.axes(projection = '3d')
         ax.scatter(clusters['ClusterNumber'],clusters['Weights'],c=kmeans3.labels_);
         
-        k_means = KMeans(n_clusters=3)
+        k_means = KMeans(n_clusters=4)
         k_means.fit(clusters)
         k_means_predicted = k_means.predict(clusters)
         
-        accuracy = round((np.mean(k_means_predicted==kmeans3.labels_))*100)
+        accuracy = round((np.mean(k_means_predicted==kmeans4.labels_))*100)
         print('Accuracy for 3-d viewing:'+str(accuracy))
         
         ax = plt.axes(projection = '3d')
-        ax.scatter(clusters['clusterpred'],clusters['Weights'], c=kmeans3.labels_ , cmap='Set2', s=128,alpha=0.8)
+        ax.scatter(clusters['clusterpred'],clusters['Weights'], c=kmeans4.labels_ , cmap='Set2', s=128,alpha=0.8)
         plt.show()
 
         print('A list of all cluster numbers for all winner nodes is displayed as follows:')
@@ -173,12 +182,3 @@ class HebbRule(object):
 
         return(df1['ClusterNumber'])
         
-   
-    def plot_weights(self):
-        plt.figure(figsize=(6, 5))
-        w_mat = plt.imshow(self.W, cmap=cm.coolwarm)
-        plt.colorbar(w_mat)
-        plt.title("Network Weights")
-        plt.tight_layout()
-        plt.savefig("weights.png")
-        plt.show()
