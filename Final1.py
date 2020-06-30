@@ -1,4 +1,3 @@
-# Importing the libraries
 import numpy as np
 import itertools
 from matplotlib.gridspec import GridSpec
@@ -9,7 +8,7 @@ import skimage.data
 from skimage.color import rgb2gray
 from skimage.filters import threshold_mean
 from skimage.transform import resize
-import Final22
+import Final2
 from neupy import algorithms
 from pandas import read_csv
 from collections import defaultdict
@@ -19,16 +18,12 @@ from SimpSOM import somNet
 
 # Importing the dataset 
 script_dir = os.path.dirname(__file__)
-training_set_path = os.path.join(script_dir, 'diabetes (1).csv')
+training_set_path = os.path.join(script_dir, 'diabetes.csv')
 dataset = pd.read_csv(training_set_path)
 X = dataset.iloc[:, :-1].values
-y=dataset.iloc[:,-1].values
-
-
-
-
 y = dataset.iloc[:, -1].values
 print(X)
+
 from sklearn.preprocessing import MinMaxScaler
 X=sklearn.preprocessing.normalize(X)
 
@@ -37,7 +32,7 @@ from minisom import MiniSom
 
 som = MiniSom(x=10, y=10, input_len=len(X.T),learning_rate=1.6,random_seed=10)
 som.random_weights_init(X)
-som.train_random(data=X, num_iteration=500)
+som.train_random(data=X, num_iteration=200)
 qt=som.quantization_error(X)
 print("Quantizaion error:",qt)
 
@@ -64,8 +59,6 @@ for i, x in enumerate(X):
 show()
 
 mappings = som.win_map(X)
-ids = np.concatenate((mappings[(8,7)], mappings[(7,7)]), axis=0)
-print("These are the ids of winner nodes:",ids)
 
 dataset['winner']=win
 print(dataset.head())
@@ -109,7 +102,7 @@ ax.set_xticks(ticks)
 ax.set_yticks(ticks)
 ax.set_xticklabels(names)
 ax.set_yticklabels(names)
-plt.title('Correlations Matrix',fontsize=20);
+plt.title('Correlations Matrix',fontsize=20)
 plt.show()
 cor = defaultdict(list)
 
@@ -118,7 +111,7 @@ def main():
     # Load data 
     # Create Network Model
    
-    model = Final22.HebbRule()
+    model = Final2.HebbRule()
     E=[]
     for i, x in enumerate(X):
         w = som.winner(x)
@@ -129,36 +122,41 @@ def main():
     dataset['Weights']= E
     print(dataset.head())
 
-    print("show network weights matrix")
-    model.plot_weights()
-
     print("Show Hebbian weights and further perform clustering.")
     r=model.main()
 
     dataset['Severity of diabetes']=r
 
     dataset['Severity of diabetes'].replace(to_replace =0, 
-                 value ="LOW",inplace=True)
+                 value ="MAJOR",inplace=True)
     dataset['Severity of diabetes'].replace(to_replace =1, 
-                 value ="MODERATE",inplace=True)
+                 value ="No diabetes",inplace=True)
     dataset['Severity of diabetes'].replace(to_replace =2, 
-                 value ="HIGH",inplace=True)
+                 value ="SEVERE",inplace=True)
+    dataset['Severity of diabetes'].replace(to_replace =3, 
+                 value ="MINOR",inplace=True)
     dataset.dropna(axis=0,inplace=True)
     dataset.reset_index(drop=True,inplace=True)
     
-    print(dataset.head(10))
+    print(dataset.head(50))
     print(dataset['Outcome'].value_counts())
     print(dataset["Severity of diabetes"].value_counts())
 
     
     dataset.loc[:,'error']=0
-    a=dataset[dataset['Severity of diabetes']=="HIGH"][dataset['Outcome']==0]['error'].count()
-    b=dataset[dataset['Severity of diabetes']=="MODERATE"][dataset['Outcome']==0]['error'].count()
-    c=dataset[dataset['Outcome']==0]['error'].count()
-    d=dataset[dataset['Outcome']==1]['error'].count()
+    a=dataset[dataset['Severity of diabetes']=="SEVERE"][dataset['Outcome']==0]['error'].count()
+    b=dataset[dataset['Severity of diabetes']=="MAJOR"][dataset['Outcome']==0]['error'].count()
+    c=dataset[dataset['Severity of diabetes']=="MODERATE"][dataset['Outcome']==0]['error'].count()
+    d=dataset[dataset['Severity of diabetes']=="No diabetes"][dataset['Outcome']==1]['error'].count()
+
+ 
+    c1=dataset[dataset['Outcome']==0]['error'].count()
+    d1=dataset[dataset['Outcome']==1]['error'].count()
+
+    print(dataset[dataset['Severity of diabetes']=='SEVERE']['Weights'].head(20))
   
     
-    print("error rate =",(a+b)/(c+d) * 100)
+    print("error rate =",(a+b+c+d)/(c1+d1) * 100)
      
 
         
