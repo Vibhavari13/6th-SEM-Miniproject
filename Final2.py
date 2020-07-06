@@ -93,9 +93,9 @@ class HebbRule(object):
         print(" The Calinsky score for K-means 3 is :",metrics.calinski_harabasz_score(df, labels))
         
         
-        kmeans3 = KMeans(n_clusters = 4, init = 'k-means++', random_state = 0)
-        x1=kmeans3.fit_predict(df)
-        labels = kmeans3.labels_
+        kmeans4 = KMeans(n_clusters = 4, init = 'k-means++', random_state = 0)
+        x1=kmeans4.fit_predict(df)
+        labels = kmeans4.labels_
         print(" The silhouette score for K-means 4 is :", metrics.silhouette_score(df, labels, metric = 'euclidean'))
         print(" The Calinsky score for K-means 4 is :",metrics.calinski_harabasz_score(df, labels))
 
