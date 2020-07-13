@@ -93,9 +93,9 @@ class HebbRule(object):
         print(" The Calinsky score for K-means 3 is :",metrics.calinski_harabasz_score(df, labels))
         
         
-        kmeans4 = KMeans(n_clusters = 4, init = 'k-means++', random_state = 0)
-        x1=kmeans4.fit_predict(df)
-        labels = kmeans4.labels_
+        kmeans3 = KMeans(n_clusters = 4, init = 'k-means++', random_state = 0)
+        x1=kmeans3.fit_predict(df)
+        labels = kmeans3.labels_
         print(" The silhouette score for K-means 4 is :", metrics.silhouette_score(df, labels, metric = 'euclidean'))
         print(" The Calinsky score for K-means 4 is :",metrics.calinski_harabasz_score(df, labels))
 
@@ -182,3 +182,12 @@ class HebbRule(object):
 
         return(df1['ClusterNumber'])
         
+   
+    def plot_weights(self):
+        plt.figure(figsize=(6, 5))
+        w_mat = plt.imshow(self.W, cmap=cm.coolwarm)
+        plt.colorbar(w_mat)
+        plt.title("Network Weights")
+        plt.tight_layout()
+        plt.savefig("weights.png")
+        plt.show()
