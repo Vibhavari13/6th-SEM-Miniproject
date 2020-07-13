@@ -21,9 +21,13 @@ script_dir = os.path.dirname(__file__)
 training_set_path = os.path.join(script_dir, 'diabetes.csv')
 dataset = pd.read_csv(training_set_path)
 X = dataset.iloc[:, :-1].values
+y=dataset.iloc[:,-1].values
+
+
+
+
 y = dataset.iloc[:, -1].values
 print(X)
-
 from sklearn.preprocessing import MinMaxScaler
 X=sklearn.preprocessing.normalize(X)
 
@@ -122,41 +126,41 @@ def main():
     dataset['Weights']= E
     print(dataset.head())
 
+    print("show network weights matrix")
+    model.plot_weights()
+
     print("Show Hebbian weights and further perform clustering.")
     r=model.main()
 
     dataset['Severity of diabetes']=r
 
-    dataset['Severity of diabetes'].replace(to_replace =0, 
-                 value ="MAJOR",inplace=True)
-    dataset['Severity of diabetes'].replace(to_replace =1, 
-                 value ="No diabetes",inplace=True)
-    dataset['Severity of diabetes'].replace(to_replace =2, 
-                 value ="SEVERE",inplace=True)
     dataset['Severity of diabetes'].replace(to_replace =3, 
-                 value ="MINOR",inplace=True)
+                 value ="NO RISK",inplace=True)
+    dataset['Severity of diabetes'].replace(to_replace =1, 
+                 value ="LOW",inplace=True)
+    dataset['Severity of diabetes'].replace(to_replace =2, 
+                 value ="MODERATE",inplace=True)
+    dataset['Severity of diabetes'].replace(to_replace =0, 
+                 value ="HIGH",inplace=True)
     dataset.dropna(axis=0,inplace=True)
     dataset.reset_index(drop=True,inplace=True)
     
-    print(dataset.head(50))
+    print(dataset.head(10))
     print(dataset['Outcome'].value_counts())
     print(dataset["Severity of diabetes"].value_counts())
 
     
     dataset.loc[:,'error']=0
-    a=dataset[dataset['Severity of diabetes']=="SEVERE"][dataset['Outcome']==0]['error'].count()
-    b=dataset[dataset['Severity of diabetes']=="MAJOR"][dataset['Outcome']==0]['error'].count()
-    c=dataset[dataset['Severity of diabetes']=="MINOR"][dataset['Outcome']==0]['error'].count()
-    d=dataset[dataset['Severity of diabetes']=="No diabetes"][dataset['Outcome']==1]['error'].count()
+    a=dataset[dataset['Severity of diabetes']=="HIGH"][dataset['Outcome']==0]['error'].count()
+    b=dataset[dataset['Severity of diabetes']=="MODERATE"][dataset['Outcome']==0]['error'].count()
+    C=dataset[dataset['Severity of diabetes']=="NO RISK"][dataset['Outcome']==1]['error'].count()
+    c=dataset[dataset['Outcome']==0]['error'].count()
+    d=dataset[dataset['Outcome']==1]['error'].count()
 
- 
-    c1=dataset[dataset['Outcome']==0]['error'].count()
-    d1=dataset[dataset['Outcome']==1]['error'].count()
-
-    print(dataset[dataset['Severity of diabetes']=='SEVERE']['Weights'].head(20))
+    print(dataset[dataset['Severity of diabetes']=='HIGH']['Weights'].head)
   
     
-    print("error rate =",(a+b+c+d)/(c1+d1) * 100)
+    print("error rate =",(a+b+C)/(c+d) * 100)
      
 
         
