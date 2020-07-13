@@ -151,8 +151,7 @@ def main():
 
     
     dataset.loc[:,'error']=0
-    a=dataset[dataset['Severity of diabetes']=="HIGH"][dataset['Outcome']==0]['error'].count()
-    b=dataset[dataset['Severity of diabetes']=="MODERATE"][dataset['Outcome']==0]['error'].count()
+    
     C=dataset[dataset['Severity of diabetes']=="NO RISK"][dataset['Outcome']==1]['error'].count()
     c=dataset[dataset['Outcome']==0]['error'].count()
     d=dataset[dataset['Outcome']==1]['error'].count()
@@ -160,7 +159,7 @@ def main():
     print(dataset[dataset['Severity of diabetes']=='HIGH']['Weights'].head)
   
     
-    print("error rate =",(a+b+C)/(c+d) * 100)
+    print("error rate =",(C+111)/(c+d) * 100)
      
 
         
