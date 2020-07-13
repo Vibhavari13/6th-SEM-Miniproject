@@ -146,7 +146,7 @@ def main():
     dataset.loc[:,'error']=0
     a=dataset[dataset['Severity of diabetes']=="SEVERE"][dataset['Outcome']==0]['error'].count()
     b=dataset[dataset['Severity of diabetes']=="MAJOR"][dataset['Outcome']==0]['error'].count()
-    c=dataset[dataset['Severity of diabetes']=="MODERATE"][dataset['Outcome']==0]['error'].count()
+    c=dataset[dataset['Severity of diabetes']=="MINOR"][dataset['Outcome']==0]['error'].count()
     d=dataset[dataset['Severity of diabetes']=="No diabetes"][dataset['Outcome']==1]['error'].count()
 
  
